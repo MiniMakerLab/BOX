@@ -24,9 +24,9 @@ void setup(){
       logState[i]=true;
   }
 }
+
 void loop(){
     unsigned long currentMillis=millis(); 
-    /*Pisca-Pisca e Ambulancia*/  
     if(currentMillis-previousMillis[13]>=1000){
         previousMillis[13] = currentMillis;
         if (logState[13] == true){
@@ -49,8 +49,7 @@ void loop(){
           digitalWrite(7,LOW);                    
           logState[7]=true;
         }    
-    }
-    /*Ambulancia*/
+    }    
     if(digitalRead(botao)==LOW){
       if(logState[13]==true){
         tone(12,1440);
@@ -60,13 +59,11 @@ void loop(){
     }else{
       noTone(12);
     }
-    /*Poste de Iluminação Pública*/
     if(analogRead(1)>600){
       digitalWrite(11,HIGH);
     }else{
       digitalWrite(11,LOW);
     }
-    /*Semáforo*/
     if(currentMillis-previousMillis[6]>=interval){
         previousMillis[6] = currentMillis;
         if (logState[6] == true){
