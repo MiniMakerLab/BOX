@@ -1,3 +1,9 @@
+#define botao 2
+#define c1 1.009249522e-03
+#define c2 2.378405444e-04
+#define c3 2.019202697e-07
+#define R1 10000
+
 #include <Wire.h>
 #include <CustomStepper.h>
 #include <Adafruit_GFX.h>
@@ -5,16 +11,14 @@
  
 Adafruit_SSD1306 display = Adafruit_SSD1306();
 
-int botao=2, interval=4000,tempo;
+int interval=4000,tempo;
 bool logState[14];
 unsigned long previousMillis[14]; 
 int Vo;
-float R1 = 10000;
 float logR2, R2, T, Tc;
-float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07;
-char str[5];
 
 void setup(){
+  Serial.begin(9600);
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.setTextColor(WHITE); 
@@ -132,11 +136,13 @@ void loop(){
     logR2 = log(R2);
     T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
     Tc = T - 273.15;
-    display.clearDisplay();
-    display.setCursor(0,10);
-    display.print("Temperatura: "); 
-    display.print(Tc);
-    display.print(" C");
-    display.display();
-    delay(1000);       
+    if(currentMillis-previousMillis[11]>=1000){
+      previousMillis[11] = currentMillis;
+      display.clearDisplay();
+      display.setCursor(0,10);
+      display.print("Temperatura: "); 
+      display.print(Tc);
+      display.print(" C");
+      display.display();
+    }
 }
